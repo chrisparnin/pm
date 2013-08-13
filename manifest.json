@@ -1,0 +1,17 @@
+{
+  "name": "PM",
+  "version": "1.0.0",
+  "manifest_version": 2,
+  "description": "Post contextual reminders on web pages.",
+  "background": { "page": "background.html"},
+  "browser_action": {
+    "default_icon": "PM.png"
+  },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["jquery-1.10.1.min.js", "sandbox.js"]
+  }],
+  "permissions": [
+    "tabs",  "<all_urls>"
+  ]
+}
