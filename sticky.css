@@ -1,0 +1,19 @@
+#sticky 
+{
+	padding: 0.5ex;
+	width: 600px;
+	background-color: rgba(255,210,54,.5);
+	color: #000;
+	font-size: 2em;
+
+	border-radius: 0.5ex;
+}
+#sticky.stick 
+{
+	position: fixed;
+	top: 0;
+	right:40px;
+	z-index: 10000;
+
+	border-radius: 0 0 0.5em 0.5em;
+}

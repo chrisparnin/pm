@@ -8,6 +8,7 @@ function getReminder()
 	   {
 	      var resp = JSON.parse(xhr.responseText);
 
+			createSticky( resp.studies[0].name );
 			createRelativeSticky( resp.studies[0].name );
 
 		}
@@ -15,6 +16,9 @@ function getReminder()
 	xhr.send();
 }
 
+
+//getReminder();
+createSticky("Hello");
 createRelativeSticky( "A Test a test" );
 
 
@@ -37,47 +41,45 @@ function createRelativeSticky( name )
 {
 	var element = document.createElement('div');
 	element.id = "sticky-anchor";
-
+	element.style.position = "absolute";
+	element.style.top = "40px";
+	element.style.right = "40px";	
 	document.body.appendChild(element);
 
 	var element2 = document.createElement('div');
 	element2.id = "sticky";
+	element2.style.position = "absolute";
+	element2.style.top = "40px";
+	element2.style.right = "40px";	
+
+	element2.innerText = name;
 	
 	document.body.appendChild(element2);
 
-	var sheet = document.styleSheets[0];
+	var style = document.createElement('link');
+	style.rel = 'stylesheet';
+	style.type = 'text/css';
+	style.href = chrome.extension.getURL('sticky.css');
+	(document.head||document.documentElement).appendChild(style);
 
-	sheet.insertRule(
-		"{\n"+
-			"#sticky\n"+
-			"padding: 0.5ex;\n"+
-			"width: 600px;\n"+
-			"background-color: #000;\n"+
-			"color: #fff;\n"+
-			"font-size: 2em;\n"+
-			"border-radius: 0.5ex;\n"+
-		"}",
-	sheet.cssRules.length);
-
-	sheet.insertRule(
-		"#sticky.stick {\n"+
-			  "position: fixed;\n"+
-			  "top: 0;\n"+
-			  "z-index: 10000;\n"+
-			  "border-radius: 0 0 0.5em 0.5em;\n"+
-		"}",
-	sheet.cssRules.length);
-	
 }
+
 
 function sticky_relocate() {
   var window_top = $(window).scrollTop();
   var div_top = $('#sticky-anchor').offset().top;
-  if (window_top > div_top) {
+
+  console.log("scroll:" + window_top + ":" + div_top );
+
+	if (window_top > 40) {
+  //if (window_top > div_top) {
     $('#sticky').addClass('stick');
+    $('#sticky').attr('style', '');
   } else {
     $('#sticky').removeClass('stick');
+    $('#sticky').attr('style', 'right:40px;top:40px;position:absolute;');
   }
+
 }
 
 $(function() {
