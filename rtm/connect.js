@@ -4,10 +4,17 @@ var RememberTheMilk = require("./rtm.js");
 
 var api_key = "125a2569657f22ef2105cefdfabd5c1b";
 var api_secret = "3cb3d64fd76ac23d";
-var rtm = new RememberTheMilk(api_key, api_secret, "read");
+var rtm = new RememberTheMilk(api_key, api_secret, "delete");
 
-setToken("241d9231183124e91570729f163886c5076ea230");
-getTasksInContextList();
+//setToken("241d9231183124e91570729f163886c5076ea230");
+//setToken("dd7706c12f4201bab6d19c801806a2fcd869a173");
+setToken("5378bdbdbd6980a3e907c7b1da5e7a7ba9e05845");
+
+//getTasksInContextList();
+
+//addTask("test things", "http://checkbox.io" );
+
+getTasksWithUrls();
 
 //getToken( function(token) {
 //	console.log("token:" + token);
@@ -64,10 +71,50 @@ function getLists()
 			console.log(list.name + ' (id: ' + list.id + ')');
 		}
 
-		console.log();
-
 		process.exit();
 	});
+}
+
+function addTask(text, url, contextId)
+{
+
+	rtm.get('rtm.timelines.create', function(resp) {
+		console.log(resp);
+		var timeline = resp.rsp.timeline;
+		rtm.get('rtm.tasks.add', {timeline:timeline,name:text}, function(resp) {
+			var listId = resp.rsp.list.id;
+			var taskSeriesId = resp.rsp.list.taskseries.id;
+			var taskId = resp.rsp.list.taskseries.task.id;
+			console.log( listId + ":" + taskSeriesId );
+			console.log( resp );
+			rtm.get('rtm.tasks.setURL', {timeline:timeline, list_id:listId, taskseries_id:taskSeriesId, task_id: taskId, url: url},  
+			function(resp) 
+			{
+				console.log( resp );	
+
+				rtm.get('rtm.tasks.setTags', 
+					{timeline:timeline, list_id:listId, taskseries_id:taskSeriesId, task_id: taskId, tags: "url"}, function(resp)
+				{ 
+					console.log( resp );	
+				});
+			});
+		});
+	});
+
+}
+
+function getTasksWithUrls()
+{
+	rtm.get('rtm.tasks.getList', {filter:"tag:url"}, function(resp) {
+
+		console.log( resp.rsp.tasks.list );	
+
+	});
+}
+
+function getContextListId()
+{
+	
 }
 
 function getTasksInContextList()
