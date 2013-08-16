@@ -1,6 +1,3 @@
-var stdin = process.stdin;
-var RememberTheMilk = require("./rtm.js");
-
 
 var api_key = "125a2569657f22ef2105cefdfabd5c1b";
 var api_secret = "3cb3d64fd76ac23d";
@@ -8,13 +5,13 @@ var rtm = new RememberTheMilk(api_key, api_secret, "delete");
 
 //setToken("241d9231183124e91570729f163886c5076ea230");
 //setToken("dd7706c12f4201bab6d19c801806a2fcd869a173");
-setToken("5378bdbdbd6980a3e907c7b1da5e7a7ba9e05845");
+//setToken("5378bdbdbd6980a3e907c7b1da5e7a7ba9e05845");
 
 //getTasksInContextList();
 
 //addTask("test things", "http://checkbox.io" );
 
-getTasksWithUrls();
+//getTasksWithUrls();
 
 
 
@@ -105,11 +102,18 @@ function addTask(text, url, contextId)
 
 }
 
-function getTasksWithUrls()
+function getTasksWithUrls(onReady)
 {
+	console.log("rtm.tasks.getList");
+
 	rtm.get('rtm.tasks.getList', {filter:"tag:url"}, function(resp) {
 
-		console.log( resp.rsp.tasks.list );	
+		console.log( resp );
+		//console.log( resp.rsp.tasks.list );	
+		onReady( resp.rsp.tasks.list.map( function(elem) { 
+				return elem.taskseries;
+			})
+		);
 
 	});
 }

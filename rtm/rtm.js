@@ -9,7 +9,7 @@
  *   md5 function on other platforms. I recommend this one:
  *   http://www.myersdaily.org/joseph/javascript/md5-text.html
  *
- *   Based on RTM PHP Library by Adam Magaña
+ *   Based on RTM PHP Library by Adam MagaÃ±a
  *   @see https://github.com/adammagana/rtm-php-library
  *
  *   License (The MIT License)
@@ -59,7 +59,8 @@
 		}
 
 		this.md5 = (!this.isNode)
-			? md5
+			? //md5
+          CryptoJS.MD5
 			: function(string) {
 				return crypto.createHash('md5').update(string, 'utf8').digest("hex");
 			}
@@ -197,10 +198,10 @@
 
 			params.method = method;
 
-			if (!this.isWinJS && !this.isNode) {
-				callbackName = 'RememberTheMilk' + new Date().getTime();
-				params.callback = callbackName;
-			}
+			//if (!this.isWinJS && !this.isNode) {
+			//	callbackName = 'RememberTheMilk' + new Date().getTime();
+			//	params.callback = callbackName;
+			//}
 
 			if (this.auth_token) {
 				params.auth_token = this.auth_token;
@@ -228,7 +229,7 @@
 					});
 				}).end();
 			} else {
-				window[callbackName] = function (resp) {
+				/*window[callbackName] = function (resp) {
 					callback.call(this, resp);
 					window[callbackName] = null;
 				}
@@ -236,9 +237,22 @@
 				s = document.createElement('script');
 				s.src = requestUrl;
 				document.body.appendChild(s);
+				*/
+				var xhr = new XMLHttpRequest();
+				xhr.open("GET", requestUrl, true);
+				xhr.onreadystatechange = function() 
+				{
+				   if( xhr.readyState == 4 )
+				   {
+				      var resp = JSON.parse(xhr.responseText);
+				      callback(resp);
+					}
+				}
+				xhr.send();			
 			}
 		};
 	}
 
 	return exports;
 }())));
+

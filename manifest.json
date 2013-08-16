@@ -10,7 +10,7 @@
   "content_scripts": [{
     "matches": ["<all_urls>"],
     "css": [ "sticky.css" ],
-    "js": ["jquery-1.10.1.min.js", "sandbox.js"]
+    "js": ["jquery-1.10.1.min.js", "rtm/md5.js", "rtm/rtm.js", "rtm/chromeConnect.js", "sandbox.js"]
   }],
   "permissions": [
     "tabs",  "<all_urls>"

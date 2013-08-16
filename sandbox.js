@@ -16,11 +16,20 @@ function getReminder()
 	xhr.send();
 }
 
-
-//getReminder();
-createSticky("Hello");
-createRelativeSticky( "A Test a test" );
-
+setToken("5378bdbdbd6980a3e907c7b1da5e7a7ba9e05845");
+getTasksWithUrls( function( tasks )
+{
+	console.log( tasks );
+	for( var i=0; i < tasks.length; i++ )
+	{
+		var task = tasks[i];
+		if( location.href.indexOf(task.url) == 0 )
+		{
+			//createSticky("Hello");
+			createRelativeSticky( task.name );
+		}
+	}
+});
 
 function createSticky( name )
 {
