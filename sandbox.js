@@ -76,9 +76,9 @@ function createRelativeSticky( name )
 
 function sticky_relocate() {
   var window_top = $(window).scrollTop();
-  var div_top = $('#sticky-anchor').offset().top;
+  //var div_top = $('#sticky-anchor').offset().top;
 
-  console.log("scroll:" + window_top + ":" + div_top );
+  //console.log("scroll:" + window_top + ":" + div_top );
 
 	if (window_top > 40) {
   //if (window_top > div_top) {
