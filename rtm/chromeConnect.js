@@ -109,11 +109,29 @@ function getTasksWithUrls(onReady)
 	rtm.get('rtm.tasks.getList', {filter:"tag:url"}, function(resp) {
 
 		console.log( resp );
+
+		var tasks = [];
+
 		//console.log( resp.rsp.tasks.list );	
-		onReady( resp.rsp.tasks.list.map( function(elem) { 
-				return elem.taskseries;
-			})
-		);
+		resp.rsp.tasks.list.map( function(elem) { 
+
+				if( elem.taskseries instanceof Array )
+				{
+					for( var i=0; i < elem.taskseries.length; i++ )
+					{
+						var t = elem.taskseries[i];
+						tasks.push( t );
+					}
+				}
+				else
+				{
+					tasks.push( elem.taskseries );
+				}
+
+				//return elem.taskseries;
+		});
+
+		onReady( tasks );
 
 	});
 }

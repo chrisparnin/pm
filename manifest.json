@@ -5,8 +5,23 @@
   "description": "Post contextual reminders on web pages.",
   "background": { "page": "background.html"},
   "browser_action": {
-    "default_icon": "PM.png"
+    "default_icon": "PM.png",
+    "default_popup": "browser_action.html"
   },
+
+  "commands" : {
+
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+M",
+        "mac": "Command+M"
+      }
+    }    
+
+  },
+
+
+
   "content_scripts": [{
     "matches": ["<all_urls>"],
     "css": [ "sticky.css" ],
