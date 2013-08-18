@@ -16,11 +16,22 @@ getTasksWithUrls( function( tasks )
 				freq[task.url] = 0;
 			}
 
-			createRelativeSticky( task.name, freq[task.url] );
+			createRelativeSticky( task.task.id, task.list_id, task.id, task.name, freq[task.url] );
 
 			freq[task.url]++;
 		}
 	}
+
+	if( !document.getElementById("stick-stylesheet") )
+	{
+		var style = document.createElement('link');
+		style.id = "stick-stylesheet"
+		style.rel = 'stylesheet';
+		style.type = 'text/css';
+		style.href = chrome.extension.getURL('sticky.css');
+		(document.head||document.documentElement).appendChild(style);
+	}
+
 });
 
 function createSticky( name )
@@ -38,14 +49,14 @@ function createSticky( name )
 	document.body.appendChild(element);
 }
 
-function createRelativeSticky( name, itemNumber )
+function _createRelativeSticky( id, name, itemNumber )
 {
-	var element = document.createElement('div');
+	/*var element = document.createElement('div');
 	element.setAttribute("class", "sticky-anchor");
 	element.style.position = "absolute";
 	element.style.top = "40px";
 	element.style.right = "40px";
-	document.body.appendChild(element);
+	document.body.appendChild(element);*/
 
 	var element2 = document.createElement('div');
 	element2.setAttribute("class", "sticky");
@@ -57,14 +68,48 @@ function createRelativeSticky( name, itemNumber )
 	element2.innerText = name;
 	
 	document.body.appendChild(element2);
+}
 
-	var style = document.createElement('link');
-	style.rel = 'stylesheet';
-	style.type = 'text/css';
-	style.href = chrome.extension.getURL('sticky.css');
-	(document.head||document.documentElement).appendChild(style);
+function createRelativeSticky( id, listId, taskSeriesId, name, itemNumber )
+{
+	// task ID
+	$("<div></div>")
+		.attr("id", id)
+		.addClass("sticky")
+		.css("position","absolute")
+		.css("top","40px")
+		.css("right","40px")
+		.appendTo( "body" )
+		.data('item', itemNumber)
+		.data('listId', listId)
+		.data('taskSeriesId', taskSeriesId)
+		.on('hover', function() 
+		{
+
+		});
+
+	var sticky = $("#"+id);
+	sticky.append('<span>'+name+'</span>' );
+
+	sticky.append('<button>Rem</button>').on('click',
+		function () {
+			var listId = sticky.data('listId');
+			var taskSeriesId = sticky.data('taskSeriesId');
+			var taskId = sticky.attr("id");
+
+			removeTask (taskId, taskSeriesId, listId, function (argument) {
+
+				console.log("Deleted");
+
+				sticky.remove();
+
+			});
+
+		});
 
 }
+
+
 
 
 function sticky_relocate() {

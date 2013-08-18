@@ -102,6 +102,24 @@ function addTask(text, url, contextId)
 
 }
 
+
+function removeTask (taskId, taskSeriesId, listId, onReady) {
+
+	rtm.get('rtm.timelines.create', function(resp) {
+		console.log(resp);
+		var timeline = resp.rsp.timeline;
+		rtm.get('rtm.tasks.delete', {timeline:timeline,task_id:taskId, taskseries_id:taskSeriesId, list_id:listId}, function(resp) {
+
+			console.log( resp );
+			onReady();
+
+		});
+
+	});
+
+}
+
+
 function getTasksWithUrls(onReady)
 {
 	console.log("rtm.tasks.getList");
@@ -120,12 +138,12 @@ function getTasksWithUrls(onReady)
 					for( var i=0; i < elem.taskseries.length; i++ )
 					{
 						var t = elem.taskseries[i];
-						tasks.push( t );
+						tasks.push( formatTaskObj(t, elem.id) );
 					}
 				}
 				else
 				{
-					tasks.push( elem.taskseries );
+					tasks.push( formatTaskObj(elem.taskseries, elem.id) );
 				}
 
 				//return elem.taskseries;
@@ -134,6 +152,11 @@ function getTasksWithUrls(onReady)
 		onReady( tasks );
 
 	});
+}
+
+function formatTaskObj (task, list_id) {
+	task["list_id"] = list_id;
+	return task;
 }
 
 function getContextListId()
