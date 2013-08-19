@@ -34,6 +34,8 @@ getTasksWithUrls( function( tasks )
 
 });
 
+var colors = ["rgba(222,78,113,.5)", "rgba(0,124,146,.5)", "rgba(255,210,54,0.5)"];
+
 function createSticky( name )
 {
 	var element = document.createElement('div');
@@ -49,29 +51,10 @@ function createSticky( name )
 	document.body.appendChild(element);
 }
 
-function _createRelativeSticky( id, name, itemNumber )
-{
-	/*var element = document.createElement('div');
-	element.setAttribute("class", "sticky-anchor");
-	element.style.position = "absolute";
-	element.style.top = "40px";
-	element.style.right = "40px";
-	document.body.appendChild(element);*/
-
-	var element2 = document.createElement('div');
-	element2.setAttribute("class", "sticky");
-	element2.style.position = "absolute";
-	element2.style.top = "40px";
-	element2.style.right = "40px";	
-	element2.dataset.item = itemNumber;
-
-	element2.innerText = name;
-	
-	document.body.appendChild(element2);
-}
-
 function createRelativeSticky( id, listId, taskSeriesId, name, itemNumber )
 {
+	var color = colors[Math.floor(Math.random()*colors.length)];
+
 	// task ID
 	$("<div></div>")
 		.attr("id", id)
@@ -79,19 +62,34 @@ function createRelativeSticky( id, listId, taskSeriesId, name, itemNumber )
 		.css("position","absolute")
 		.css("top","40px")
 		.css("right","40px")
+		.css("background-color", color)
+		.attr('margin-top', (($(this).data('item') ) * 40) + "px" )
 		.appendTo( "body" )
 		.data('item', itemNumber)
 		.data('listId', listId)
-		.data('taskSeriesId', taskSeriesId)
-		.on('hover', function() 
-		{
-
-		});
+		.data('taskSeriesId', taskSeriesId);
 
 	var sticky = $("#"+id);
 	sticky.append('<span>'+name+'</span>' );
 
-	sticky.append('<button>Rem</button>').on('click',
+	sticky.on('mouseenter', function() 
+	{
+		$(this).find('.stickyBtn').each(function () 
+		{
+			$(this).show();
+		});
+	});
+
+	sticky.on('mouseleave', function() 
+	{
+		$(this).find('.stickyBtn').each(function () 
+		{
+			$(this).hide();
+		});
+	});
+
+
+	$('<button id="remBtn" class="stickyBtn">Rem</button>').on('click',
 		function () {
 			var listId = sticky.data('listId');
 			var taskSeriesId = sticky.data('taskSeriesId');
@@ -105,8 +103,12 @@ function createRelativeSticky( id, listId, taskSeriesId, name, itemNumber )
 
 			});
 
-		});
+		}).appendTo("#"+id);
 
+    $('.sticky .stickyBtn').each(function () {
+		$(this).hide();    	
+    });
+	
 }
 
 
@@ -126,7 +128,10 @@ function sticky_relocate() {
     $('.sticky').each(function () 
     {
     	$(this).addClass('stick');
-    	$(this).attr('style', 'margin-top:' + (($(this).data('item') ) * 40) + "px;" );
+    	$(this)
+    		.css('position','fixed')
+    		.css('top', '0px')
+    		.css('margin-top', (($(this).data('item') ) * 40) + "px" );
     });
 
   } else {
@@ -135,10 +140,11 @@ function sticky_relocate() {
     $('.sticky').each(function () 
     {
    	$(this).removeClass('stick');
-   	$(this).attr('style', 'right:40px;top:40px;position:absolute;' + 'margin-top:' + (($(this).data('item') ) * 40) + "px;");
+   	$(this)
+   		.css('position', 'absolute')
+    		.css('top', '40px')
+   		.css('margin-top', (($(this).data('item') ) * 40) + "px");
     });
-
-
   }
 
 }

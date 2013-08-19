@@ -2,20 +2,30 @@
 {
 	padding: 0.5ex;
 	width: 600px;
-	background-color: rgba(255,210,54,.5);
+	/*background-color: rgba(255,210,54,.5);*/
 	color: #000;
 	font-size: 2em;
+	z-index: 20000;
 
-	border-radius: 0.5ex;
+	/*pointer-events:none;*/
+	border-radius: 1ex;
 }
 
+.stickyBtn
+{
+	/*pointer-events:all;*/
+}
+
+.stickyBtn:hover
+{
+	cursor: pointer;
+}
 
 .sticky.stick 
 {
 	position: fixed;
 	top: 0;
 	right:40px;
-	z-index: 10000;
-
+	z-index: 2000000;
 	border-radius: 0 0 0.5em 0.5em;
 }
