@@ -1,8 +1,20 @@
-setToken("5378bdbdbd6980a3e907c7b1da5e7a7ba9e05845");
-getTasksWithUrls( function( tasks )
-{
-	console.log( tasks );
 
+
+setToken("5378bdbdbd6980a3e907c7b1da5e7a7ba9e05845");
+
+chrome.runtime.sendMessage( {getTasks:true}, function(response)
+{
+	if( response.action == "tasks_loaded" )
+	{
+		loadTasks( response.tasks );
+	}
+
+});
+
+
+
+function loadTasks ( tasks ) 
+{
 	var freq = {};
 
 	for( var i=0; i < tasks.length; i++ )
@@ -10,7 +22,6 @@ getTasksWithUrls( function( tasks )
 		var task = tasks[i];
 		if( location.href.indexOf(task.url) == 0 )
 		{
-			//createSticky("Hello");
 			if( !freq.hasOwnProperty(task.url) )
 			{
 				freq[task.url] = 0;
@@ -48,7 +59,9 @@ getTasksWithUrls( function( tasks )
 
 	}
 
-});
+}
+
+
 
 var colors = ["rgba(222,78,113,.5)", "rgba(0,124,146,.5)", "rgba(255,210,54,0.5)"];
 
