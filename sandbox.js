@@ -16,9 +16,17 @@ getTasksWithUrls( function( tasks )
 				freq[task.url] = 0;
 			}
 
-			createRelativeSticky( task.task.id, task.list_id, task.id, task.name, freq[task.url] );
+			var due = Date.now() ;
+			if( task.task.due != "" )
+			{
+				due = new Date(task.task.due);
+			}
 
-			freq[task.url]++;
+			if( due <= Date.now() )
+			{
+				createRelativeSticky( task.task.id, task.list_id, task.id, task.name, task.task.due, freq[task.url] );
+				freq[task.url]++;
+			}
 		}
 	}
 
@@ -28,8 +36,16 @@ getTasksWithUrls( function( tasks )
 		style.id = "stick-stylesheet"
 		style.rel = 'stylesheet';
 		style.type = 'text/css';
-		style.href = chrome.extension.getURL('sticky.css');
+		style.href = chrome.extension.getURL('css/sticky.css');
 		(document.head||document.documentElement).appendChild(style);
+
+		style = document.createElement('link');
+		style.id = "font-awesome-stylesheet"
+		style.rel = 'stylesheet';
+		style.type = 'text/css';
+		style.href = chrome.extension.getURL('css/font-awesome.css');
+		(document.head||document.documentElement).appendChild(style);
+
 	}
 
 });
@@ -44,14 +60,14 @@ function createSticky( name )
 	element.style.right = "40px";
 	element.style.background = "rgba(255,210,54,.5)";
 
-	element.style.padding = "50px";
+	element.style.padding = "40px";
 	element.style.zIndex = "2147483647";
 	element.innerText = name;
 
 	document.body.appendChild(element);
 }
 
-function createRelativeSticky( id, listId, taskSeriesId, name, itemNumber )
+function createRelativeSticky( id, listId, taskSeriesId, name, due, itemNumber )
 {
 	var color = colors[Math.floor(Math.random()*colors.length)];
 
@@ -67,7 +83,8 @@ function createRelativeSticky( id, listId, taskSeriesId, name, itemNumber )
 		.appendTo( "body" )
 		.data('item', itemNumber)
 		.data('listId', listId)
-		.data('taskSeriesId', taskSeriesId);
+		.data('taskSeriesId', taskSeriesId)
+		.data('due', due );
 
 	var sticky = $("#"+id);
 	sticky.append('<span>'+name+'</span>' );
@@ -89,7 +106,7 @@ function createRelativeSticky( id, listId, taskSeriesId, name, itemNumber )
 	});
 
 
-	$('<button id="remBtn" class="stickyBtn">Rem</button>').on('click',
+	$('<i class="stickyBtn icon-remove"></i>').on('click',
 		function () {
 			var listId = sticky.data('listId');
 			var taskSeriesId = sticky.data('taskSeriesId');
@@ -104,6 +121,24 @@ function createRelativeSticky( id, listId, taskSeriesId, name, itemNumber )
 			});
 
 		}).appendTo("#"+id);
+
+	$('<i class="stickyBtn icon-bell-alt"></i>').on('click',
+		function () {
+			var listId = sticky.data('listId');
+			var taskSeriesId = sticky.data('taskSeriesId');
+			var due = sticky.data('due');
+			var taskId = sticky.attr("id");
+
+			console.log("snoozing...")
+
+			snoozeTask (taskId, taskSeriesId, listId, due, function () {
+
+				console.log("snoozed");
+
+			});
+
+		}).appendTo("#"+id);
+
 
     $('.sticky .stickyBtn').each(function () {
 		$(this).hide();    	

@@ -24,11 +24,11 @@
 
   "content_scripts": [{
     "matches": ["<all_urls>"],
-    "css": [ "sticky.css" ],
+
     "js": ["jquery-1.10.1.min.js", "rtm/md5.js", "rtm/rtm.js", "rtm/chromeConnect.js", "sandbox.js"]
   }],
   "permissions": [
     "tabs",  "<all_urls>"
   ],
-  "web_accessible_resources": ["sticky.css"]
+  "web_accessible_resources": ["css/sticky.css", "css/font-awesome.css", "font/fontawesome-webfont.eot", "font/fontawesome-webfont.svg", "font/fontawesome-webfont.ttf", "font/fontawesome-webfont.woff"]
 }

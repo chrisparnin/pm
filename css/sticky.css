@@ -1,24 +1,32 @@
 .sticky 
 {
-	padding: 0.5ex;
+	padding: .75ex;
 	width: 600px;
 	/*background-color: rgba(255,210,54,.5);*/
 	color: #000;
-	font-size: 2em;
+	font-size: 18px;
 	z-index: 20000;
 
 	/*pointer-events:none;*/
 	border-radius: 1ex;
+
+	margin:0px;
 }
 
 .stickyBtn
 {
 	/*pointer-events:all;*/
+	transition: all .2s ease-out;
+	margin:5px;
+	font-size:90%;
+	color: rgba(51, 51, 51, 1);
+	float:right;
 }
 
 .stickyBtn:hover
 {
 	cursor: pointer;
+	color: rgba(94, 33, 48, 1);
 }
 
 .sticky.stick 

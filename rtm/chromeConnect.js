@@ -119,6 +119,38 @@ function removeTask (taskId, taskSeriesId, listId, onReady) {
 
 }
 
+function snoozeTask (taskId, taskSeriesId, listId, due, onReady) {
+
+	rtm.get('rtm.timelines.create', function(resp) {
+		console.log(resp);
+		var timeline = resp.rsp.timeline;
+
+		var dt = "";
+		if( dt == "" )
+		{
+			dt = new Date();
+			dt.setTime(dt.getTime() + (8*60*60*1000));
+		}
+		else
+		{
+			dt = new Date(dt);
+			dt.setTime(dt.getTime() + (8*60*60*1000));
+		}
+
+		console.log( dt.toISOString() );
+
+		rtm.get('rtm.tasks.setDueDate', {timeline:timeline,task_id:taskId, taskseries_id:taskSeriesId, due: dt.toISOString(), has_due_time: "1", list_id:listId}, function(resp) {
+
+			console.log( resp );
+			onReady();
+
+		});
+
+	});
+
+}
+
+
 
 function getTasksWithUrls(onReady)
 {
