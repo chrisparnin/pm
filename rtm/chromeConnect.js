@@ -24,37 +24,34 @@ function setToken (token)
 	rtm.auth_token = token;
 }
 
-function getToken(onResult)
-{
+function getAuthUrl(onResult)
+{	
+
 	rtm.get("rtm.auth.getFrob", function(resp)
 	{
 		var frob = resp.rsp.frob;
 
 		console.log( resp.rsp );
 
-			var authUrl = rtm.getAuthUrl(frob);
+		var authUrl = rtm.getAuthUrl(frob);
 
-			console.log('Please visit the following URL in your browser to authenticate:\n');
-			console.log(authUrl, '\n');
-			console.log('After authenticating, press any key to resume...');
+		onResult( frob, authUrl);
+	});
 
-			stdin.resume();
+}
 
-			stdin.on('data', function() 
-			{
-				rtm.get('rtm.auth.getToken', {frob: frob}, function(resp)
-				{
-					if (!resp.rsp.auth) {
-						console.log( resp.rsp );
-						console.log('Auth token not found. Did you authenticate?\n');
-						process.exit(1);
-					}
+function getToken(frob, onResult)
+{
+	rtm.get('rtm.auth.getToken', {frob: frob}, function(resp)
+	{
+		if (!resp.rsp.auth) 
+		{
+			console.log( resp.rsp );
+			console.log('Auth token not found. Did you authenticate?\n');
+			onResult(null);
+		}
 
-					onResult( resp.rsp.auth.token );
-				});
-
-			});
-
+		onResult( resp.rsp.auth.token );
 	});
 }
 

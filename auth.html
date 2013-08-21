@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Configure auth</title>
+
+		<script src="jquery-1.10.1.min.js"></script>
+		<script src="rtm/md5.js"></script>
+		<script src="rtm/rtm.js"></script>
+		<script src="rtm/chromeConnect.js"></script>
+
+		<script src="auth.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="css/font-awesome.css"></link>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"  media="screen"></link>
+
+		<style>
+
+			ol 
+			{
+				list-style-type: none;
+			}
+
+			ul
+			{
+				list-style-type: none;
+			}
+
+			.providerBtn
+			{
+			    transition: all .4s ease-out;
+			}
+
+			.providerBtn:hover 
+			{
+				opacity:0.5;
+			   cursor: pointer;
+			}
+
+			#successParagraph
+			{
+				color: rgb(200,100,100);
+			}
+
+		</style>
+
+
+	</head>
+	<body>
+		<div class="container well">
+
+			<h3>Select a reminder provider</h3>
+
+			<div class="row-fluid">
+				<div class="span8">
+
+					<p>You can create an account with a service in a few seconds if you don't have one already.</p>
+					<ul>
+						<li>
+							<div class="providerBtn" id="rtmBtn">
+								<img src="img/RTM.png"></img>
+							</div>
+						</li>
+					</ul>
+
+					<p id="successParagraph">Authorized.  You can now create your first reminder by clicking the "PM" icon, or using "Ctrl+M".</p>
+
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

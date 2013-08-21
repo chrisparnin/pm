@@ -1,7 +1,17 @@
 
 
-setToken("5378bdbdbd6980a3e907c7b1da5e7a7ba9e05845");
-requestTasksFromChrome();
+//setToken("5378bdbdbd6980a3e907c7b1da5e7a7ba9e05845");
+
+chrome.runtime.sendMessage( {getOptions:true}, function(response)
+{
+
+	if( response.options.token )
+	{		
+		setToken(response.options.token);		
+		requestTasksFromChrome();
+	}
+
+});
 
 function requestTasksFromChrome () 
 {
@@ -34,13 +44,18 @@ function refreshTasksFromChrome ()
 
 chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) 
 {
+	console.log( "request from extension" );
+	console.log( request );
+
 	if ( request.reload ) 
 	{
 		console.log("content script sent message to request reload.");
 		requestTasksFromChrome();
+
+		sendResponse({});
 	}
 
-	return false;
+	return true;
 });
 
 

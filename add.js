@@ -10,10 +10,10 @@ chrome.tabs.getSelected(null, function(tab) {
 $(document).ready( function () {
 
 	console.log( "document loaded");
+
 	
 	$("#addBtn").click( function () {
 
-		console.log("click");
 		var url = document.getElementById("url");
 		var reminder = document.getElementById("reminder");
 
@@ -21,7 +21,7 @@ $(document).ready( function () {
 		{
 			// UI feedback to user.
 			$("#addBtnContent").text("Adding...");
-			$("addBtn").attr('disabled','disabled');
+			$("#addBtn").attr('disabled','disabled');
 
 			// Let background page do work...even if dismissed.
 			chrome.runtime.sendMessage( {addTask:true, url:url.value, reminder:reminder.value}, function(response)
