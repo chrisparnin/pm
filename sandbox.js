@@ -130,7 +130,7 @@ function createRelativeSticky( id, listId, taskSeriesId, name, due, itemNumber )
 		.css("top","40px")
 		.css("right","40px")
 		.css("background-color", color)
-		.attr('margin-top', (($(this).data('item') ) * 40) + "px" )
+    	.css('margin-top', (itemNumber * 40) + "px" )
 		.appendTo( "body" )
 		.data('item', itemNumber)
 		.data('listId', listId)
@@ -155,6 +155,24 @@ function createRelativeSticky( id, listId, taskSeriesId, name, due, itemNumber )
 			$(this).hide();
 		});
 	});
+
+
+	sticky.find('span').editable(function(value, settings) { 
+
+			// Let background page do work...and handle update.
+			chrome.runtime.sendMessage( {editTask:true, taskId:id, taskSeriesId:taskSeriesId, listId:listId, value:value}, function(response)
+			{
+				// UI is updated right away, but server will take a second...
+
+
+			});
+
+	     return(value);
+
+	  }, { 
+	     type    : 'text',
+	     submit  : 'OK',
+	 });
 
 
 	$('<i class="stickyBtn icon-remove"></i>').on('click',

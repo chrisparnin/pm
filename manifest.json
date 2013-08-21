@@ -25,7 +25,7 @@
   "content_scripts": [{
     "matches": ["<all_urls>"],
 
-    "js": ["jquery-1.10.1.min.js", "rtm/md5.js", "rtm/rtm.js", "rtm/chromeConnect.js", "sandbox.js"]
+    "js": ["jquery-1.10.1.min.js", "jquery.jeditable.mini.js", "rtm/md5.js", "rtm/rtm.js", "rtm/chromeConnect.js", "sandbox.js"]
   }],
   "permissions": [
     "tabs",  "<all_urls>"

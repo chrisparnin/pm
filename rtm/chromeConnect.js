@@ -105,6 +105,23 @@ function addTask(text, url, contextId, onReady)
 
 }
 
+function editTask (taskId, taskSeriesId, listId, newName, onReady) {
+
+	rtm.get('rtm.timelines.create', function(resp) {
+		console.log(resp);
+		var timeline = resp.rsp.timeline;
+		rtm.get('rtm.tasks.setName', {timeline:timeline,task_id:taskId, taskseries_id:taskSeriesId, list_id:listId, name: newName}, function(resp) {
+
+			console.log( resp );
+			onReady();
+
+		});
+
+	});
+
+}
+
+
 
 function removeTask (taskId, taskSeriesId, listId, onReady) {
 
