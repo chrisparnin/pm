@@ -113,7 +113,7 @@ function editTask (taskId, taskSeriesId, listId, newName, onReady) {
 		rtm.get('rtm.tasks.setName', {timeline:timeline,task_id:taskId, taskseries_id:taskSeriesId, list_id:listId, name: newName}, function(resp) {
 
 			console.log( resp );
-			onReady();
+			onReady( resp );
 
 		});
 
