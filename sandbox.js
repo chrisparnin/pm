@@ -1,21 +1,57 @@
 
 
 setToken("5378bdbdbd6980a3e907c7b1da5e7a7ba9e05845");
+requestTasksFromChrome();
 
-chrome.runtime.sendMessage( {getTasks:true}, function(response)
+function requestTasksFromChrome () 
 {
-	if( response.action == "tasks_loaded" )
+
+	chrome.runtime.sendMessage( {getTasks:true}, function(response)
 	{
-		loadTasks( response.tasks );
+		if( response.action == "tasks_loaded" )
+		{
+			loadTasks( response.tasks );
+		}
+
+	});
+
+}
+
+function refreshTasksFromChrome () 
+{
+
+	chrome.runtime.sendMessage( {refresh:true}, function(response)
+	{
+		if( response.action == "tasks_loaded" )
+		{
+			loadTasks( response.tasks );
+		}
+
+	});
+
+}
+
+
+chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) 
+{
+	if ( request.reload ) 
+	{
+		console.log("content script sent message to request reload.");
+		requestTasksFromChrome();
 	}
 
+	return false;
 });
-
 
 
 function loadTasks ( tasks ) 
 {
 	var freq = {};
+
+	$(".sticky").each(function () 
+	{
+		$(this).remove();
+	});
 
 	for( var i=0; i < tasks.length; i++ )
 	{
@@ -59,6 +95,8 @@ function loadTasks ( tasks )
 
 	}
 
+	// Make sure properly positioned.
+	sticky_relocate();
 }
 
 
@@ -131,6 +169,8 @@ function createRelativeSticky( id, listId, taskSeriesId, name, due, itemNumber )
 
 				sticky.remove();
 
+				refreshTasksFromChrome();
+
 			});
 
 		}).appendTo("#"+id);
@@ -147,6 +187,8 @@ function createRelativeSticky( id, listId, taskSeriesId, name, due, itemNumber )
 			snoozeTask (taskId, taskSeriesId, listId, due, function () {
 
 				console.log("snoozed");
+
+				refreshTasksFromChrome();
 
 			});
 
@@ -168,7 +210,7 @@ function sticky_relocate() {
 
   //console.log("scroll:" + window_top + ":" + div_top );
 
-	if (window_top > 40) {
+	if (window_top >= 40) {
   //if (window_top > div_top) {
     //$('.sticky').addClass('stick');
     //$('.sticky').attr('style', 'margin-top:' + (($(".sticky").data('item') +1) * 40) + "px;" );
@@ -197,7 +239,9 @@ function sticky_relocate() {
 
 }
 
-$(function() {
+$(document).ready( function() {
+
   $(window).scroll(sticky_relocate);
   sticky_relocate();
+
 });

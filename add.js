@@ -1,5 +1,3 @@
-
-
 chrome.tabs.getSelected(null, function(tab) {
 
 	var url = document.getElementById("url");
@@ -8,10 +6,10 @@ chrome.tabs.getSelected(null, function(tab) {
 
 });
 
+
 $(document).ready( function () {
 
 	console.log( "document loaded");
-	setToken("5378bdbdbd6980a3e907c7b1da5e7a7ba9e05845");
 	
 	$("#addBtn").click( function () {
 
@@ -21,8 +19,16 @@ $(document).ready( function () {
 
 		if( url.value && reminder.value )
 		{
-			addTask(reminder.value, url.value );
-			console.log("added");
+			// UI feedback to user.
+			$("#addBtnContent").text("Adding...");
+			$("addBtn").attr('disabled','disabled');
+
+			// Let background page do work...even if dismissed.
+			chrome.runtime.sendMessage( {addTask:true, url:url.value, reminder:reminder.value}, function(response)
+			{
+				console.log("sent background add Task request");
+				window.close();
+			});
 		}
 		else
 		{

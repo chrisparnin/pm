@@ -10,20 +10,71 @@
 
 		<script src="add.js"></script>
 
+		<link rel="stylesheet" type="text/css" href="css/font-awesome.css"></link>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"  media="screen"></link>
+
+
 		<style>
+			html
+			{
+			   width:720px;
+			   overflow: hidden !important;
+			}
 			body
 			{
-			   width:500px;
-			   height:75px;
-			}		
+			   width:720px;
+			   overflow: hidden !important;
+
+			}
+
+			.control-label
+			{
+				width:55px !important;
+				font-weight: bold;
+			}
+
+			.controls
+			{
+				margin-left:75px !important;
+			}
+
 		</style>
+
+
 	</head>
 	<body>
-		<h3>Add a reminder!!!</h3>
-		<input type="text" id="reminder" placeholder="Reminder">
-		</input>
-		<input type="text" id="url">
-		</input>
-		<button id="addBtn">+</button>
+		<div class="container well">
+
+			<h3>Attach a new reminder</h3>
+			<div class="row-fluid">
+				<div class="span12">
+
+					<form class="form-horizontal">
+					<div class="control-group">
+					  <label class="control-label" for="reminder">Reminder</label>
+					  <div class="controls">
+					    <input id="reminder" name="reminder" type="text" placeholder="Reminder" class="span8">
+					    <p class="help-block"><em>Your reminder text.  You can snooze, edit, and delete it later.</em></p>
+					  </div>
+					</div>
+
+					<div class="control-group">
+					  <label class="control-label" for="url">Show in</label>
+					  <div class="controls">
+					    <input id="url" name="url" type="text" placeholder="Url" class="span8">
+					    <p class="help-block"><em>You reminder is only shown in this url.</em></p>
+					  </div>
+					</div>
+					</form>
+				</div>
+         </div>
+
+			<div class="row-fluid">
+				<button class="offset1 btn btn-primary" id="addBtn"><span id="addBtnContent">Attach</span></button>
+			</div>
+
+
+
+		</div>
 	</body>
 </html>

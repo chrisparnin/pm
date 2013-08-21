@@ -74,7 +74,7 @@ function getLists()
 	});
 }
 
-function addTask(text, url, contextId)
+function addTask(text, url, contextId, onReady)
 {
 
 	rtm.get('rtm.timelines.create', function(resp) {
@@ -95,6 +95,9 @@ function addTask(text, url, contextId)
 					{timeline:timeline, list_id:listId, taskseries_id:taskSeriesId, task_id: taskId, tags: "url"}, function(resp)
 				{ 
 					console.log( resp );	
+
+					onReady(formatTaskObj(resp.rsp.list.taskseries, resp.rsp.list.id));
+
 				});
 			});
 		});

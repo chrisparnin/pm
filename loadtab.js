@@ -52,10 +52,44 @@ chrome.runtime.onMessage.addListener(
 			return true;
 		}
 	}
+
+	if( request.refresh )
+	{
+		getTasksWithUrls( function( tasks )
+		{
+			console.log( tasks );
+			allTasks.loaded = Date.now();
+			allTasks.tasks = tasks;
+	   	sendResponse({action: "tasks_loaded", tasks: allTasks.tasks });
+		});
+
+		// when expecting to send message asynchronously.
+		return true;		
+	}
+
+	if( request.addTask )
+	{
+
+		addTask(request.reminder, request.url, null, function(newTask)
+		{
+			console.log("added");
+			// let popup know it can close...
+			sendResponse({});
+
+			// set null so all will be reloaded from source.
+			allTasks.tasks.push( newTask );
+
+			chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+				chrome.tabs.sendMessage( tabs[0].id, {reload:true}, function(response)
+				{
+					console.log("received reload request");
+				});
+			});
+		});
+
+		return true;
+	}
+
 	return false;
 });
-
-function handleMessage()
-{
-}
 
