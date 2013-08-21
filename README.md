@@ -30,7 +30,12 @@ Just click the "PM" icon or hit "Ctrl+M" or "Command+M", type a reminder, and at
 
 I have not released this to the chrome app store at the moment.
 
-To install:
+#### To install from packed extension.
+
+* Right click [packed chrome extension](https://github.com/chrisparnin/pm/blob/master/release/pm.crx?raw=true) and Save as.  
+* Double click saved file and install.
+
+#### To install from source:
 
 - [Download](https://github.com/chrisparnin/pm/archive/master.zip) and unzip
 - In chrome, visit: `chrome://extensions/`. 
