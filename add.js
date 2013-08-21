@@ -35,4 +35,23 @@ $(document).ready( function () {
 			console.log("error");
 		}
 	});
+
+	$("#refreshBtn").click( function() {
+
+			// UI feedback to user.
+			$("#refreshBtnContent").text("Refreshing...");
+			$("#refreshBtn").attr('disabled','disabled');
+
+			// Let background page do work...even if dismissed.
+			chrome.runtime.sendMessage( {refresh:true, fromPopup:true}, function(response)
+			{
+				$("#refreshBtn").removeAttr('disabled');
+				$("#refreshBtnContent").text("Refresh");
+
+			});
+
+
+	});
+
+
 });

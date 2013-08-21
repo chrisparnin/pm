@@ -145,7 +145,27 @@ chrome.runtime.onMessage.addListener(
 			console.log( tasks );
 			allTasks.loaded = Date.now();
 			allTasks.tasks = tasks;
-	   	sendResponse({action: "tasks_loaded", tasks: allTasks.tasks });
+
+			// sent from popup, so needs to send tab the message.
+			if( request.fromPopup )
+			{
+				chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+					console.log( tabs );
+					chrome.tabs.sendMessage( tabs[0].id, {reload:true}, function(response)
+					{
+						if( chrome.runtime.lastError )
+						{
+							console.log( chrome.runtime.lastError.message );
+						}
+						console.log(response);
+					});
+				});
+			}
+			else
+			{
+				// send back to content script.
+		   	sendResponse({action: "tasks_loaded", tasks: allTasks.tasks });
+		   }
 		});
 
 		// when expecting to send message asynchronously.
