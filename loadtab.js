@@ -158,6 +158,9 @@ chrome.runtime.onMessage.addListener(
 							console.log( chrome.runtime.lastError.message );
 						}
 						console.log(response);
+
+						// let popup know refreshed.
+						sendResponse({});
 					});
 				});
 			}
