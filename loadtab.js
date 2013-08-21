@@ -67,6 +67,26 @@ chrome.runtime.onMessage.addListener(
 		return true;		
 	}
 
+	if( request.editTask )
+	{
+			editTask (request.taskId, request.taskSeriesId, request.listId, request.value, function (resp) {
+
+				if( resp.rsp.stat == "ok" )
+				{
+					for( var i=0; i < allTasks.tasks.length; i++ )
+					{
+						var task = allTasks.tasks[i];
+						if( task.task.id == request.taskId && task.id == request.taskSeriesId && task.list_id == request.listId)
+						{
+							task.name = request.value;
+							break;
+						}
+					}
+				}
+
+			});
+	}
+
 	if( request.addTask )
 	{
 
