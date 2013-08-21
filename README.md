@@ -32,8 +32,10 @@ I have not released this to the chrome app store at the moment.
 
 #### To install from packed extension.
 
-* Right click [packed chrome extension](https://github.com/chrisparnin/pm/blob/master/release/pm.crx?raw=true) and Save as.  
-* Double click saved file and install.
+* Right click [packed chrome extension](https://github.com/chrisparnin/pm/blob/master/release/pm.crx?raw=true) and Save link as. 
+* In chrome, type in url: `chrome://extensions/` or click Tools > Extensions
+* Locate file on disk and drag file onto extensions page.
+* Confirm install
 
 #### To install from source:
 
