@@ -19,3 +19,9 @@ The reminder messages are stored online with the following services, meaning you
 - [Create an issue to request new service intergration](https://github.com/chrisparnin/pm/issues)
 
 A future feature will support providing an instance id, so you add more context: `work`, `study computer`, `laptop`, etc.
+
+### Attaching a reminder
+
+Just click the "PM" icon or hit "Ctrl+M" or "Command+M", type a reminder, and attach it to the page.
+
+![Alt](https://raw.github.com/chrisparnin/pm/master/img/addreminder.png)
