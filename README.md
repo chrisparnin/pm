@@ -25,3 +25,15 @@ A future feature will support providing an instance id, so you add more context:
 Just click the "PM" icon or hit "Ctrl+M" or "Command+M", type a reminder, and attach it to the page.
 
 ![Alt](https://raw.github.com/chrisparnin/pm/master/img/addreminder.png)
+
+### Installing
+
+I have not released this to the chrome app store at the moment.
+
+To install:
+
+- [Download](https://github.com/chrisparnin/pm/archive/master.zip) and unzip
+- In chrome, visit: `chrome://extensions/`. 
+- Check `developer mode`.  
+- Click load unpacked extension and visit directory of unzipped file.
+- Should be installed!  Follow instructions on setting up authenication with service.
