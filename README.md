@@ -28,14 +28,10 @@ Just click the "PM" icon or hit "Ctrl+M" or "Command+M", type a reminder, and at
 
 ### Installing
 
-I have not released this to the chrome app store at the moment.
+#### To install from web store.
 
-#### To install from packed extension.
-
-* Right click [packed chrome extension](https://github.com/chrisparnin/pm/blob/master/release/pm.crx?raw=true) and Save link as. 
-* In chrome, type in url: `chrome://extensions/` or click Tools > Extensions
-* Locate file on disk and drag file onto extensions page.
-* Confirm install
+- Download from [Chrome web store](https://chrome.google.com/webstore/detail/pm/cgcfflfodgfcjgncckhjcmbibfebgfdo?hl=en-US&gl=US)
+- Click "Add to Chrome"
 
 #### To install from source:
 
