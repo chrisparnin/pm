@@ -59,6 +59,30 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse)
 });
 
 
+function tasksOnPage( tasks )
+{
+	var pageTasks = [];
+	for( var i=0; i < tasks.length; i++ )
+	{
+		var task = tasks[i];
+		if( location.href.indexOf(task.url) == 0 )
+		{
+			var due = Date.now() ;
+			if( task.task.due != "" )
+			{
+				due = new Date(task.task.due);
+			}
+
+			if( due <= Date.now() )
+			{
+				pageTasks.push( task );
+			}
+		}
+	}
+
+	return pageTasks;
+}
+
 function loadTasks ( tasks ) 
 {
 	var freq = {};
@@ -68,29 +92,14 @@ function loadTasks ( tasks )
 		$(this).remove();
 	});
 
-	for( var i=0; i < tasks.length; i++ )
+	var pageTasks = tasksOnPage( tasks );
+
+	for( var i=0; i < pageTasks.length; i++ )
 	{
-		var task = tasks[i];
-		if( location.href.indexOf(task.url) == 0 )
-		{
-			if( !freq.hasOwnProperty(task.url) )
-			{
-				freq[task.url] = 0;
-			}
-
-			var due = Date.now() ;
-			if( task.task.due != "" )
-			{
-				due = new Date(task.task.due);
-			}
-
-			if( due <= Date.now() )
-			{
-				createRelativeSticky( task.task.id, task.list_id, task.id, task.name, task.task.due, freq[task.url] );
-				freq[task.url]++;
-			}
-		}
+		var task = pageTasks[i];
+		createRelativeSticky( task.task.id, task.list_id, task.id, task.name, task.task.due, i );
 	}
+
 
 	if( !document.getElementById("stick-stylesheet") )
 	{
