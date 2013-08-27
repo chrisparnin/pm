@@ -16,7 +16,8 @@
     "_execute_browser_action": {
       "suggested_key": {
         "default": "Ctrl+M",
-        "mac": "Command+M"
+        "mac": "Command+M",
+        "windows": "Ctrl+M"
       }
     }
 
