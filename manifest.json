@@ -1,6 +1,6 @@
 {
   "name": "PM",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "manifest_version": 2,
   "description": "Post contextual reminders on web pages.",
   "background": { "page": "background.html"},
