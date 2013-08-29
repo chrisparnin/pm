@@ -179,8 +179,10 @@ function getTasksWithUrls(onReady)
 
 		var tasks = [];
 
+		var serverTasks = resp.rsp.tasks.list || [];
+
 		//console.log( resp.rsp.tasks.list );	
-		resp.rsp.tasks.list.map( function(elem) { 
+		serverTasks.map( function(elem) { 
 
 				if( elem.taskseries instanceof Array )
 				{
