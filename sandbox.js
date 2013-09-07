@@ -44,6 +44,8 @@ function refreshTasksFromChrome ()
 // http://blog.roomanna.com/09-24-2011/dynamically-coloring-a-favicon
 function setBadge(num)
 {
+	if( num == 0 )
+		return;
 	chrome.runtime.sendMessage( {setBadge:true, n:num, src: window.location.href }, function(response)
 	{
 		var iconLink = $("head link[rel='icon']").first();
