@@ -41,6 +41,31 @@ function refreshTasksFromChrome ()
 
 }
 
+// http://blog.roomanna.com/09-24-2011/dynamically-coloring-a-favicon
+function setBadge(num)
+{
+	chrome.runtime.sendMessage( {setBadge:true, n:num, src: window.location.href }, function(response)
+	{
+		var iconLink = $("head link[rel='icon']").first();
+		var shortcutIconLink = $("head link[rel='shortcut icon']").first();
+
+		if( iconLink.length )
+			iconLink.attr('href',response.src);
+		if( shortcutIconLink.length )
+			shortcutIconLink.attr('href',response.src);
+
+		if( iconLink.length == 0 && shortcutIconLink.length == 0 )
+		{
+			var link = document.createElement('link');
+			link.rel = 'shortcut icon';
+			link.type = 'image/x-icon';
+			link.href = response.src;
+			document.getElementsByTagName('head')[0].appendChild(link);
+		}
+
+	});
+}
+
 
 chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) 
 {
@@ -100,6 +125,7 @@ function loadTasks ( tasks )
 		createRelativeSticky( task.task.id, task.list_id, task.id, task.name, task.task.due, i );
 	}
 
+	setBadge( pageTasks.length );
 
 	if( !document.getElementById("stick-stylesheet") )
 	{

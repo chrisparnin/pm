@@ -22,9 +22,21 @@ A future feature will support providing an instance id, so you add more context:
 
 ### Attaching a reminder
 
-Just click the "PM" icon or hit "Ctrl+M" or "Command+M", type a reminder, and attach it to the page.
+Just click the "PM" icon or hit "Ctrl+M" (mac) or "Ctrl+Shift+M" (windows), type a reminder, and attach it to the page.
 
 ![Alt](https://raw.github.com/chrisparnin/pm/master/img/addreminder.png)
+
+### Modifying reminders
+
+* To edit, click on a reminder to bring up an edit box and update the text.
+* To delete, hover over a reminder, and click the "x".  This will remove the reminder from remember the milk.
+* To snooze, hover over a reminder, and click the "bell". A snoozed reminder will be hidden for the next 8 hours.  This willset a due date field, 8 hours from now.
+
+### Reminder indicators
+
+To help you notice reminders, the tab icon is updated with the number of reminders currently attached to a tab.
+
+![Alt](https://raw.github.com/chrisparnin/pm/master/img/pm-indicators.png)
 
 ### Installing
 

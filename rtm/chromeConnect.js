@@ -40,6 +40,14 @@ function getAuthUrl(onResult)
 
 }
 
+function checkToken(token, onResult)
+{
+	rtm.get('rtm.auth.checkToken', {auth_token : token}, function(resp)
+	{
+		onResult(resp.rsp.stat);
+	});	
+}
+
 function getToken(frob, onResult)
 {
 	rtm.get('rtm.auth.getToken', {frob: frob}, function(resp)

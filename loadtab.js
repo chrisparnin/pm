@@ -39,11 +39,42 @@ chrome.runtime.onInstalled.addListener(function ()
 
 	if( options.token == null )
 	{
+		// try one more time but from local.
+		chrome.storage.local.get(OptionsStorageKey, function(entry) 
+		{
+			// Set previous options.
+			var optionsStr = entry[OptionsStorageKey];
+			if( optionsStr )
+			{
+				console.log( optionsStr );
+			    var opts = JSON.parse( optionsStr );
+			    {
 
-		chrome.tabs.create({'url': chrome.extension.getURL('auth.html')}, function(tab) {
-		  // Tab opened.
+					setToken( opts.token );
+
+					options.token = opts.token;
+				}
+			}
+			else
+			{
+				chrome.tabs.create({'url': chrome.extension.getURL('auth.html')}, function(tab) {
+				  // Tab opened.
+				});				
+			}
 		});
-
+	}
+	else
+	{
+		// if token invalid refresh
+		checkToken( options.token, function(status)
+		{
+			if( status != "ok" )
+			{
+				chrome.tabs.create({'url': chrome.extension.getURL('auth.html')}, function(tab) {
+					  // Tab opened.
+				});
+			}
+		});
 	}
 
 });
@@ -195,6 +226,49 @@ chrome.runtime.onMessage.addListener(
 			});
 	}
 
+	if( request.setBadge )
+	{
+
+		var imageElement = new Image();
+		imageElement.onload = function()
+		{
+         try 
+         {
+            var w = imageElement.width;
+            var h = imageElement.height;
+
+            var canvas = document.createElement('canvas');
+				canvas.width = w;
+				canvas.height = h;
+
+            var context = canvas.getContext('2d');
+
+            context.clearRect(0, 0, w, h);
+            context.drawImage(imageElement, 0, 0, w, h);
+
+            var opt =  {w:w/1.5,h:h/1.5,x:w/3,y:h/3,n:request.n};
+            opt.bgColor = hexToRgb("#d00");
+    			opt.textColor = hexToRgb("#fff");
+    			opt.o = 1;
+
+            circleBadge( opt, context );
+
+            var url = canvas.toDataURL('image/png');
+				sendResponse({action:"loadBadge", src: url});
+         }
+         catch(e) 
+         {
+             throw e;
+             console.error('Error setting image...', e);
+         }
+   	};
+
+   	//imageElement.src = request.src;
+   	imageElement.src = "chrome://favicon/" + request.src;
+
+   	return true;
+	}
+
 	if( request.addTask )
 	{
 
@@ -263,6 +337,62 @@ function saveOptions(options)
 			alert(chrome.runtime.lastError.message);
 		}
 	});
+
+	chrome.storage.local.set( param , function() {
+		if( chrome.runtime.lastError )
+		{
+			console.log(chrome.runtime.lastError.message);
+			alert(chrome.runtime.lastError.message);
+		}
+	});
 }
 
+function circleBadge(opt, context) 
+{
+	var more = (opt.n > 9);
+	if (more) {
+	   opt.x = opt.x - opt.w * .4;
+	   opt.w = opt.w * 1.4;
+	}
+	//console.log('circle', opt);
+	//reset
+	context.beginPath();
+	context.font = "bold " + Math.floor(opt.h) + "px sans-serif";
+	context.textAlign = 'center';
+	if (more) {
+	   context.moveTo(opt.x + opt.w / 2, opt.y);
+	   context.lineTo(opt.x + opt.w - opt.h / 2, opt.y);
+	   context.quadraticCurveTo(opt.x + opt.w, opt.y, opt.x + opt.w, opt.y + opt.h / 2);
+	   context.lineTo(opt.x + opt.w, opt.y + opt.h - opt.h / 2);
+	   context.quadraticCurveTo(opt.x + opt.w, opt.y + opt.h, opt.x + opt.w - opt.h / 2, opt.y + opt.h);
+	   context.lineTo(opt.x + opt.h / 2, opt.y + opt.h);
+	   context.quadraticCurveTo(opt.x, opt.y + opt.h, opt.x, opt.y + opt.h - opt.h / 2);
+	   context.lineTo(opt.x, opt.y + opt.h / 2);
+	   context.quadraticCurveTo(opt.x, opt.y, opt.x + opt.h / 2, opt.y);
+	} else {
+	   context.arc(opt.x + opt.w / 2, opt.y + opt.h / 2, opt.h / 2, 0, 2 * Math.PI);
+	}
+	context.fillStyle = 'rgba(' + opt.bgColor.r + ',' + opt.bgColor.g + ',' + opt.bgColor.b + ',' + opt.o + ')';
+	context.fill();
+	context.closePath();
+	context.beginPath();
+	context.stroke();
+	context.fillStyle = 'rgba(' + opt.textColor.r + ',' + opt.textColor.g + ',' + opt.textColor.b + ',' + opt.o + ')';
+	context.fillText((more) ? '9+' : opt.n, Math.floor(opt.x + opt.w / 2), Math.floor(opt.y + opt.h - opt.h * 0.15));
+	context.closePath();
+};
 
+//http://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb#answer-5624139
+//HEX to RGB convertor
+function hexToRgb(hex) {
+  var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+      return r + r + g + g + b + b;
+  });
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+      r : parseInt(result[1], 16),
+      g : parseInt(result[2], 16),
+      b : parseInt(result[3], 16)
+  } : false;
+};
